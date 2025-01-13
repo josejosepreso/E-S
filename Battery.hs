@@ -1,20 +1,27 @@
-module Battery
-  ( battery
-  ) where
-
 import Util
-import Config
-import Text.Printf
+import System.IO
+import Control.Concurrent
 
 getInfo :: [[String]] -> String
 getInfo [] = []
 getInfo (x:xs)
-  | head x == batCapacityKey = (last x)
-  | head x == batStatusKey = printf "%s " (last x) ++ getInfo xs
+  | head x == batCapacityKey = last x ++ "\n"
+  | head x == batStatusKey = (last x) ++ " " ++ getInfo xs
   | otherwise = getInfo xs
 
 battery :: IO String
 battery = getInfo
-          <$> map (\x -> split '=' x)
+          <$> map (split '=')
           <$> lines
           <$> readFile batPath
+
+main :: IO ()
+main = do
+  battery >>= putStr
+  hFlush stdout
+  threadDelay 1000000
+  main
+
+batPath = "/sys/class/power_supply/BAT0/uevent"
+batCapacityKey = "POWER_SUPPLY_CAPACITY"
+batStatusKey = "POWER_SUPPLY_STATUS"

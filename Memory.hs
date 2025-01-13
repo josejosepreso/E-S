@@ -1,19 +1,15 @@
-module Memory
-  ( memory
-  )
-  where
-
 import Util
-import Config
 import Text.Printf
+import Control.Concurrent
+import System.IO
+import System.Environment
 
 getInfo :: [[String]] -> String
 getInfo [] = []
 getInfo xs =
-  let w = words $ values xs
-      t = read $ last w :: Float
-      h = read $ head w :: Float
-  in printf "%.2f Gi / %.2f Gi" (t - h) (t)
+  let t = read $ last $ words $ values xs :: Float
+      h = read $ head $ words $ values xs :: Float
+  in printf "%.2f Gi / %.2f Gi\n" (t - h) t
     where
       values [] = []
       values (x:xs)
@@ -21,8 +17,23 @@ getInfo xs =
         | head x == memAvailableKey = show $ read (last x) * oneGB
         | otherwise = values xs
 
-memory :: IO String
-memory = getInfo
-         <$> map (\x -> init $ split ' ' x)
-         <$> lines
-         <$> readFile memPath
+putInfo :: [String] -> IO ()
+putInfo [] = putInfo ["-i", "5"]
+putInfo args = do
+  getInfo
+    <$> map (init . split ' ')
+    <$> lines
+    <$> readFile memPath
+    >>= putStr
+  hFlush stdout
+  threadDelay $ (read $ last args) * 1000000
+  putInfo args
+
+main :: IO ()
+main = getArgs >>= putInfo
+
+oneGB :: Float
+oneGB = 9.5367431640625e-7
+memPath = "/proc/meminfo"
+memTotalKey = "MemTotal:"
+memAvailableKey = "MemAvailable:"
