@@ -11,5 +11,5 @@ main :: IO ()
 main = do
   clock >>= putStr
   hFlush stdout
-  threadDelay 1000000
+  threadDelay 50000000
   main

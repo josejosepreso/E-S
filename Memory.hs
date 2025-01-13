@@ -26,7 +26,7 @@ putInfo args = do
     <$> readFile memPath
     >>= putStr
   hFlush stdout
-  threadDelay $ (read $ last args) * 1000000
+  threadDelay 10000000
   putInfo args
 
 main :: IO ()

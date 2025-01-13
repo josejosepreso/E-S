@@ -19,7 +19,7 @@ main :: IO ()
 main = do
   battery >>= putStr
   hFlush stdout
-  threadDelay 1000000
+  threadDelay 10000000
   main
 
 batPath = "/sys/class/power_supply/BAT0/uevent"
