@@ -5,11 +5,11 @@ import System.IO
 import Control.Concurrent
 
 clock :: IO String
-clock = getZonedTime >>= return . formatTime defaultTimeLocale "%Y %b %d (%a) %I:%M%p\n"
+clock = getZonedTime >>= return . formatTime defaultTimeLocale "%Y %b %d (%a) %I:%M%p"
 
 main :: IO ()
 main = do
-  clock >>= putStr
+  clock >>= putStrLn
   hFlush stdout
   threadDelay 50000000
   main

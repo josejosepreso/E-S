@@ -12,7 +12,7 @@ getInfo xs =
       used = total - head f
       units = if used < (1.048576e+6) then oneMiB else oneGiB
       str = if units == oneMiB then "Mi" else "Gi"
-  in printf "M%.2f %s / %.2f Gi\n" (used * units) str (total * oneGiB)
+  in printf "M%.2f %s / %.2f Gi" (used * units) str (total * oneGiB)
     where
       values [] = []
       values (x:xs)
@@ -27,7 +27,7 @@ putInfo args = do
     <$> map (init . split ' ')
     <$> lines
     <$> readFile memPath
-    >>= putStr
+    >>= putStrLn
   hFlush stdout
   threadDelay 10000000
   putInfo args

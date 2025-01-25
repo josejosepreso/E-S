@@ -5,7 +5,7 @@ import Control.Concurrent
 getInfo :: [[String]] -> String
 getInfo [] = []
 getInfo (x:xs)
-  | head x == batCapacityKey = last x ++ "\n"
+  | head x == batCapacityKey = last x ++ "%\n"
   | head x == batStatusKey = (last x) ++ " " ++ getInfo xs
   | otherwise = getInfo xs
 
