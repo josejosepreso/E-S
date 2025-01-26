@@ -18,3 +18,7 @@ putInfo args (x:xs)
 main :: IO ()
 main = do
   putInfo <$> getArgs <*> getNetworkInterfaces >>= putStrLn
+  hFlush stdout
+  threadDelay 10000000
+  main
+

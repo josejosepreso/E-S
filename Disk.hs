@@ -17,7 +17,7 @@ putInfo args = getInfo (head args)
             locat = last x
             used = x !! 2
             total = x !! 1
-        in printf "%s (%s): %s / %s" dev locat used total
+        in printf "D(%s): %s / %s" locat used total
       | otherwise = getInfo arg xs
 
 main :: IO ()
